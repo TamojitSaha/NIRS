@@ -1,9 +1,9 @@
 /*
- * fNIRS test firmware functions
- * Author: Sandeepan Sengupta (mail@sandeepan.info)
- * Version 0.1.0
- * Released under CC-BY-ND 4.0
- */
+   fNIRS test firmware functions
+   Author: Sandeepan Sengupta (mail@sandeepan.info)
+   Version 0.1.0
+   Released under CC-BY-ND 4.0
+*/
 
 void trig(bool state)
 {
@@ -55,4 +55,28 @@ void swCH()
     digitalWrite(CH1, HIGH);
   }
   reference++;
+}
+
+void dataPack()
+{
+  for (uint8_t i = NULL; i < 4; i++)
+  {
+    if (i < 3)
+    {
+      Serial.print(data[i]);
+    }
+    if (i == 3)
+    {
+#ifdef disable_CH4
+      Serial.println(random(data_range[LOW], data_range[HIGH]));
+#else
+      Serial.println(data[i]);
+#endif
+    }
+    else
+    {
+      Serial.print('\t');
+    }
+  }
+  counter++;
 }

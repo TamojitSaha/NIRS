@@ -1,13 +1,13 @@
 /*
    fNIRS test firmware
    Author: Sandeepan Sengupta (mail@sandeepan.info)
-   Version 0.2.0
+   Version 0.3.0
    Released under CC-BY-ND 4.0
 */
 
-#define marker '#'
+//#define marker '#'
 
-#define disable_CH4
+//#define CH4
 
 #define NIR PA0
 
@@ -16,7 +16,7 @@
 #define TRG PA3
 #define RST PA4
 
-#define timeOut 5 //See 'rset()' in 'functions'
+//#define timeOut 5 //See 'rset()' in 'functions'
 
 #define channelDelay 0
 #define eventDelay 0
@@ -30,7 +30,7 @@ void setup()
     ;
   }
 
-  //  pinMode(NIR, INPUT_ANALOG);
+  pinMode(NIR, INPUT_ANALOG);
 
   pinMode(CH0, OUTPUT);
   pinMode(CH1, OUTPUT);
@@ -43,13 +43,16 @@ uint16_t  counter     = NULL;
 uint32_t  timeStamp   = NULL;
 uint32_t  eventStamp  = NULL;
 
+#ifdef marker
 boolean initialize  = false;
+#endif
 
 uint16_t data[4] = {};
-uint16_t data_range[2] = {UINT16_MAX, NULL};
 
 void loop()
 {
+
+#ifdef marker
   if (!initialize)
   {
     while (Serial.available() > NULL)
@@ -61,6 +64,8 @@ void loop()
     }
   }
   else if (initialize)
+#endif
+
   {
     delay(eventDelay);
 
@@ -69,25 +74,22 @@ void loop()
       swCH();
       trig(true);
       data[i] = analogRead(NIR);
-      if (data[i] < data_range[LOW])
-      {
-        data_range[LOW] = data[i];
-      }
-      if (data[i] > data_range[HIGH])
-      {
-        data_range[HIGH] = data[i];
-      }
       trig(false);
       rset();
       delay(channelDelay);
     }
 
-
-    if ((micros() - eventStamp) >= pow(10, 6))
+    uint32_t  tRef  = micros() - eventStamp;
+    if (tRef >= pow(10, 6))
     {
       eventStamp = micros();
-      Serial.println(marker);
-      
+
+#ifdef marker
+      Serial.print(marker);
+      Serial.print('\t');
+      Serial.println(tRef);
+#endif
+
       Serial.print(counter);
       Serial.print('\t');
       if (counter == NULL)

@@ -1,7 +1,7 @@
 /*
    fNIRS test firmware functions
    Author: Sandeepan Sengupta (mail@sandeepan.info)
-   Version 0.1.0
+   Version 0.3.0
    Released under CC-BY-ND 4.0
 */
 
@@ -29,7 +29,10 @@ void rset()
 {
   digitalWrite(TRG, LOW);
   digitalWrite(RST, HIGH);
+
+#ifdef timeOut
   delay(timeOut);
+#endif
 }
 
 void swCH()
@@ -67,10 +70,10 @@ void dataPack()
     }
     if (i == 3)
     {
-#ifdef disable_CH4
-      Serial.println(random(data_range[LOW], data_range[HIGH]));
-#else
+#ifdef CH4
       Serial.println(data[i]);
+#else
+      Serial.println();
 #endif
     }
     else

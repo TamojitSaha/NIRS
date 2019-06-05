@@ -1,11 +1,11 @@
 /*
    fNIRS test firmware
    Author: Sandeepan Sengupta (mail@sandeepan.info)
-   Version 0.4.0
+   Version 0.5.0
    Released under CC-BY-ND 4.0
 */
 
-//#define marker '#'
+#define marker '#'
 #define _Simulate_
 
 //#define CH4
@@ -44,7 +44,6 @@ void setup()
 uint8_t   reference   = NULL; //To be accessed by swCH()
 uint16_t  counter     = NULL;
 uint32_t  timeStamp   = NULL;
-uint32_t  eventStamp  = NULL;
 
 #ifdef marker
 boolean initialize  = false;
@@ -63,6 +62,7 @@ void loop()
       if (Serial.read() == marker)
       {
         initialize = true;
+        Serial.write("~\n");
       }
     }
   }
@@ -82,48 +82,20 @@ void loop()
       delay(channelDelay);
     }
 
-    uint32_t  tRef  = micros() - eventStamp;
-    if (tRef >= pow(10, 6))
+    Serial.print(counter);
+    Serial.print('\t');
+    if (counter == NULL)
     {
-      eventStamp = micros();
-
-#ifdef marker
-      Serial.print(marker);
+      Serial.print(NULL);
       Serial.print('\t');
-      Serial.println(tRef);
-#endif
-
-      Serial.print(counter);
-      Serial.print('\t');
-      if (counter == NULL)
-      {
-        Serial.print(NULL);
-      }
-      else
-      {
-        delayConter();
-      }
-      Serial.print('\t');
-      dataPack();
-      timeStamp = micros();
+      Serial.print(NULL);
     }
     else
     {
-      Serial.print(counter);
-      Serial.print('\t');
-      if (counter == NULL)
-      {
-        Serial.print(NULL);
-        Serial.print('\t');
-        Serial.print(NULL);
-      }
-      else
-      {
-        delayConter();
-      }
-      Serial.print('\t');
-      dataPack();
-      timeStamp = micros();
+      delayConter();
     }
+    Serial.print('\t');
+    dataPack();
+    timeStamp = micros();
   }
 }

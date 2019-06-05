@@ -1,7 +1,7 @@
 /*
    fNIRS test firmware functions
    Author: Sandeepan Sengupta (mail@sandeepan.info)
-   Version 0.4.0
+   Version 0.5.0
    Released under CC-BY-ND 4.0
 */
 
@@ -63,9 +63,9 @@ void swCH()
 void delayConter()
 {
   uint32_t interval = micros() - timeStamp;
-  Serial.print(interval / 1000);
+  Serial.print(interval / 1000);  //1ms is 1000us
   Serial.print('\t');
-  Serial.print(interval % 1000);
+  Serial.print(interval % 1000);  //Fetching us value
 }
 
 void dataPack()

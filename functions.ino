@@ -3,6 +3,14 @@
    Author: Sandeepan Sengupta (mail@sandeepan.info)
    Version 0.5.0
    Released under CC-BY-ND 4.0
+
+   Version 0.5.1
+   Author: Tamojit Saha (mail@tamojitsaha.info)
+   Date Modified: 5 June 2019
+     # Changes
+      - Compile-time PIN name change for MEGA,UNO,STM32F103C8
+      - Line 80, function usage fix i.e. read seril string untill '\n'
+
 */
 
 void trig(bool state)

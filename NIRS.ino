@@ -3,19 +3,37 @@
    Author: Sandeepan Sengupta (mail@sandeepan.info)
    Version 0.5.0
    Released under CC-BY-ND 4.0
+
+   Version 0.5.1
+   Author: Tamojit Saha (mail@tamojitsaha.info)
+   Date Modified: 5 June 2019
+     # Changes
+      - Compile-time PIN name change for MEGA,UNO,STM32F103C8
+      - Line 80, function usage fix i.e. read seril string untill '\n'
 */
 
-#define marker '#'
+#define marker "#"
 #define _Simulate_
 
 //#define CH4
 
+#if defined(ARDUINO_AVR_MEGA) || defined (ARDUINO_AVR_UNO)
+#define NIR A0
+#define CH0 3
+#define CH1 4
+#define TRG 5
+#define RST 6
+
+#elif defined(ARDUINO_BLUEPILL_F103C8) || defined(ARDUINO_BLACKPILL_F103C8)
 #define NIR PA0
 
 #define CH0 PA1
 #define CH1 PA2
 #define TRG PA3
 #define RST PA4
+#else
+#error Unsupported hardware
+#endif
 
 //#define timeOut 5 //See 'rset()' in 'functions'
 
@@ -59,7 +77,7 @@ void loop()
   {
     while (Serial.available() > NULL)
     {
-      if (Serial.read() == marker)
+      if (Serial.readStringUntil('\n') == marker)
       {
         initialize = true;
         Serial.write("~\n");

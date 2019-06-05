@@ -1,11 +1,12 @@
 /*
    fNIRS test firmware
    Author: Sandeepan Sengupta (mail@sandeepan.info)
-   Version 0.3.0
+   Version 0.4.0
    Released under CC-BY-ND 4.0
 */
 
 //#define marker '#'
+#define _Simulate_
 
 //#define CH4
 
@@ -30,7 +31,9 @@ void setup()
     ;
   }
 
+#ifndef _Simulate_
   pinMode(NIR, INPUT_ANALOG);
+#endif
 
   pinMode(CH0, OUTPUT);
   pinMode(CH1, OUTPUT);
@@ -98,7 +101,7 @@ void loop()
       }
       else
       {
-        Serial.print(micros() - timeStamp);
+        delayConter();
       }
       Serial.print('\t');
       dataPack();
@@ -111,10 +114,12 @@ void loop()
       if (counter == NULL)
       {
         Serial.print(NULL);
+        Serial.print('\t');
+        Serial.print(NULL);
       }
       else
       {
-        Serial.print(micros() - timeStamp);
+        delayConter();
       }
       Serial.print('\t');
       dataPack();
